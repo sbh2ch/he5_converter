@@ -26,3 +26,7 @@ octave-workspace
 .autosave
 
 # End of https://www.gitignore.io/api/matlab
+
+# he5
+
+*.he5
