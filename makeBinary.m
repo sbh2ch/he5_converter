@@ -241,6 +241,46 @@ disp( strcat('[matlab]', strHe5InputFlag, ' is sucessfully converted...') );
 res = 1;
 
 
+addX = 1000;
+addY = 1000;
+for yy=0:4
+for xx=0:4
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    for idxY=startY:10:endY
+    for idxX=startX:10:endX
+        val = a(idxX,idxY);
+        tot = [tot, val];
+        
+    end
+    testCnt= testCnt+1;
+   
+    
+    end
+    if xx==2 && yy==2
+        test22 = tot;
+        test22FirstReshpae = reshape(tot, 100, 100);
+        
+        b = fliplr( test22FirstReshpae );
+        b = rot90 ( b, -1 );
+        
+        pcolor(b); shading interp;
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\',num2str(xx),num2str(yy),'test.pos'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
+  
+
+end
+end
 
 
           
