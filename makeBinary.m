@@ -49,48 +49,13 @@ d2DGociCdom = double( h5read( strcat(data_fname,'', filename), strBandNameCdom )
 d2DGociChl  = double( h5read( strcat(data_fname,'', filename),  strBandNameChl  ) );
 d2DGociMask = double( h5read( strcat(data_fname,'', filename), strBandNameMask ) );
 
-% 남북방향으로 조정
-d2DGociFlag = rot90 ( d2DGociFlag, -2 );
-d2DGociFlag = fliplr( d2DGociFlag );
-d2DGociFlag = flipud( d2DGociFlag );
-d2DGociTss  = rot90 ( d2DGociTss, -2 );
-d2DGociTss  = fliplr( d2DGociTss );
-d2DGociTss  = flipud( d2DGociTss );
-d2DGociCdom = rot90 ( d2DGociCdom, -2 );
-d2DGociCdom = fliplr( d2DGociCdom );
-d2DGociCdom = flipud( d2DGociCdom );
-d2DGociChl  = rot90 ( d2DGociChl, -2 );
-d2DGociChl  = fliplr( d2DGociChl );
-d2DGociChl  = flipud( d2DGociChl );
-d2DGociMask = rot90 ( d2DGociMask, -2 );
-d2DGociMask = fliplr( d2DGociMask );
-d2DGociMask = flipud( d2DGociMask );
+%%Original%%
 
-% NaN 값 제거
-iStartX = str2num( strStartX ) + 1;
-iStartY = str2num( strStartY ) + 1;
-iLenX   = str2num( strLenX );
-iLenY   = str2num( strLenY );
+tot = [];
+totArray = a(2301:3300, 2301:3300);
+pcolor(totArray); shading interp;
 
-d2DGociSubFlag = d2DGociFlag    (iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-d2DGociSubTss  = d2DGociTss    (iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-d2DGociSubCdom = d2DGociCdom    (iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-d2DGociSubChl  = d2DGociChl    (iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-d2DGociMaskSub = d2DGociMask(iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-d2DLonSub  = d2DLon (iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-d2DLatSub  = d2DLat (iStartY:iStartY+iLenY-1, iStartX:iStartX+iLenX-1);
-
-d2DX = zeros( iLenY, iLenX );
-d2DY = zeros( iLenY, iLenX );
-for y=1:iLenY
-for x=1:iLenX
-    d2DX( y, x ) = x + iStartX - 2;
-    d2DY( y, x ) = y + iStartY - 2;
-end
-end
-
-% x 1392
-% y 1416
+%%1/10 Code%%
 
 addX = 1000;
 addY = 1000;
@@ -116,13 +81,117 @@ for xx=0:4
     
     end
     if xx==2 && yy==2
+        disp(strcat(num2str(startX), '->',num2str(endX),' @@@@@@@@@ ',num2str(startY),'->',num2str(endY)));
         test22 = tot;
         test22FirstReshpae = reshape(tot, 100, 100);
         
-        b = fliplr( test22FirstReshpae );
-        b = rot90 ( b, -1 );
+        pcolor(test22FirstReshpae);
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\',num2str(xx),num2str(yy),'test.pos'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
+  
+
+end
+end
+
+%%Median Code%%
+
+addX = 1000;
+addY = 1000;
+for yy=0:4
+for xx=0:4
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    
+    for idxY=startY:10:endY
+    for idxX=startX:10:endX
+        medTot = [];
+        startMedX = idxX;
+        endMedX = idxX + 10;
+        startMedY = idxY;
+        endMedY = idxY + 10;
+        for medX = startMedX:endMedX
+        for medY = startMedY:1:endMedY
+            medTot = [medTot, a(medX, medY)];
+        end
+        end
+        val = median(medTot);
+        tot = [tot, val];
+        medTot=[];
         
-        pcolor(b); shading interp;
+    end
+    testCnt= testCnt+1;
+   
+    
+    end
+    if xx==2 && yy==2
+        test22 = tot;
+        test22FirstReshpae = reshape(tot, 100, 100);        
+        pcolor(test22FirstReshpae);
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\',num2str(xx),num2str(yy),'test.pos'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
+  
+
+end
+end
+
+
+%%Mean Code%%
+
+addX = 1000;
+addY = 1000;
+for yy=0:4
+for xx=0:4
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    
+    for idxY=startY:10:endY
+    for idxX=startX:10:endX
+        medTot = [];
+        startMedX = idxX;
+        endMedX = idxX + 9;
+        startMedY = idxY;
+        endMedY = idxY + 9;
+        for medX = startMedX:endMedX
+        for medY = startMedY:1:endMedY
+            medTot = [medTot, a(medX, medY)];
+        end
+        end
+        val = nanmean(medTot);
+        index  = find(isnan(medTot));
+        if length(index) > 30
+            val = NaN;
+        end
+        tot = [tot, val];
+        
+    end
+    testCnt= testCnt+1;
+  
+   
+    end
+    if xx==2 && yy==2
+        test22 = tot;
+        test22FirstReshpae = reshape(tot, 100, 100);        
+        pcolor(test22FirstReshpae);
     end
     disp(strcat('cnt is : ',num2str(testCnt)));
     fileID = fopen(strcat('c:\mat\output\',num2str(xx),num2str(yy),'test.pos'),'wt');	% 
@@ -240,6 +309,15 @@ disp( strcat('[matlab]', strHe5InputFlag, ' is sucessfully converted...') );
 
 res = 1;
 
+tot = [];
+for idxY=1:10:5000
+for idxX=1:10:5000
+    val = a(idxX, idxY);
+    tot = [tot, val];
+end
+end
+totalReshape = reshape(tot, 500, 500);
+pcolor(totalReshape);
 
 addX = 1000;
 addY = 1000;
