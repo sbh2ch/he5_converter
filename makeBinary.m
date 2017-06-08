@@ -49,6 +49,14 @@ d2DGociCdom = double( h5read( strcat(data_fname,'', filename), strBandNameCdom )
 d2DGociChl  = double( h5read( strcat(data_fname,'', filename),  strBandNameChl  ) );
 d2DGociMask = double( h5read( strcat(data_fname,'', filename), strBandNameMask ) );
 
+% NaN Á¦°Å
+a=d2DGociChl;
+index=find(a==-999);
+a(index)=NaN;
+index=find(a>7);
+a(index)=NaN;
+
+% pcolor(a); shading interp;
 %%Original%%
 
 tot = [];
@@ -124,9 +132,13 @@ for xx=0:4
             medTot = [medTot, a(medX, medY)];
         end
         end
-        val = median(medTot);
+        val = nanmedian(medTot);
+        index  = find(isnan(medTot));
+        if length(index) > 60
+            val = NaN;
+        end    
         tot = [tot, val];
-        medTot=[];
+        
         
     end
     testCnt= testCnt+1;
@@ -178,7 +190,7 @@ for xx=0:4
         end
         val = nanmean(medTot);
         index  = find(isnan(medTot));
-        if length(index) > 30
+        if length(index) > 50
             val = NaN;
         end
         tot = [tot, val];
@@ -199,6 +211,38 @@ for xx=0:4
     fclose(fileID);
   
 
+end
+end
+
+
+
+%%Original Code%%
+
+addX = 100;
+addY = 100;
+for yy=0:49
+for xx=0:49
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    
+    for idxY=startY:endY
+    for idxX=startX:endX
+        val = d2DGociChl(idxX, idxY);
+        tot = [tot, val];        
+    end
+    testCnt= testCnt+1;   
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\origin\',num2str(xx),'_',num2str(yy),'test.pos'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
 end
 end
 
