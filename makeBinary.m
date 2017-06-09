@@ -196,13 +196,6 @@ for xx=0:4
         
     end
     testCnt= testCnt+1;
-  
-   
-    end
-    if xx==2 && yy==2
-        test22 = tot;
-        test22FirstReshpae = reshape(tot, 100, 100);        
-        pcolor(test22FirstReshpae);
     end
     disp(strcat('cnt is : ',num2str(testCnt)));
     fileID = fopen(strcat('c:\mat\output\',num2str(xx),num2str(yy),'test.pos'),'wt');	% 
@@ -229,37 +222,31 @@ for xx=0:5
     disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
     testCnt=0;
     
-    for idxX=startX:8:endY
-    for idxY=startY:8:endX
+    for idxX=startX:8:endX
+    for idxY=startY:8:endY
         medTot = [];
         startMedX = idxX;
         endMedX = idxX + 7;
         startMedY = idxY;
         endMedY = idxY + 7;
         for medX = startMedX:endMedX
-        for medY = startMedY:1:endMedY
+        for medY = startMedY:endMedY
             medTot = [medTot, a(medX, medY)];
         end
         end
         val = nanmean(medTot);
         index  = find(isnan(medTot));
-        if length(index) > 70
+        if length(index) > 40
             val = NaN;
         end
         tot = [tot, val];
         
     end
     testCnt= testCnt+1;
-  
-   
     end
-    if xx==2 && yy==2
-        test22 = tot;
-        test22FirstReshpae = reshape(tot, 100, 100);        
-        pcolor(test22FirstReshpae);
-    end
+
     disp(strcat('cnt is : ',num2str(testCnt)));
-    fileID = fopen(strcat('c:\mat\output\6\',num2str(xx),num2str(yy),'.pos'),'wt');	% 
+    fileID = fopen(strcat('c:\mat\output\6\',num2str(xx),'-',num2str(yy),'.db'),'wt');	% 
     fprintf(fileID,'%f\n',tot);
     fclose(fileID);
   
@@ -268,7 +255,98 @@ end
 end
 
 
-%%Original Code%%
+%%12x12 Code%%
+
+addX = 400;
+addY = 400;
+for yy=0:11
+for xx=0:11
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    
+    for idxX=startX:4:endX
+    for idxY=startY:4:endY
+        medTot = [];
+        startMedX = idxX;
+        endMedX = idxX + 3;
+        startMedY = idxY;
+        endMedY = idxY + 3;
+        for medX = startMedX:endMedX
+        for medY = startMedY:endMedY
+            medTot = [medTot, a(medX, medY)];
+        end
+        end
+        val = nanmean(medTot);
+        index  = find(isnan(medTot));
+        if length(index) > 10
+            val = NaN;
+        end
+        tot = [tot, val];
+        
+    end
+    testCnt= testCnt+1;
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\4\',num2str(xx),'-',num2str(yy),'.db'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
+  
+
+end
+end
+
+%%25x25 Code%%
+
+addX = 200;
+addY = 200;
+for yy=0:24
+for xx=0:24
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    
+    for idxX=startX:2:endX
+    for idxY=startY:2:endY
+        medTot = [];
+        startMedX = idxX;
+        endMedX = idxX + 1;
+        startMedY = idxY;
+        endMedY = idxY + 1;
+        for medX = startMedX:endMedX
+        for medY = startMedY:endMedY
+            medTot = [medTot, a(medX, medY)];
+        end
+        end
+        val = nanmean(medTot);
+        index  = find(isnan(medTot));
+        tot = [tot, val];
+        
+    end
+    testCnt= testCnt+1;
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\5\',num2str(xx),'-',num2str(yy),'.db'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
+  
+
+end
+end
+
+%%50x50 Code%%
 
 addX = 100;
 addY = 100;
@@ -284,177 +362,16 @@ for xx=0:49
     disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
     testCnt=0;
     
-    for idxY=startY:endY
     for idxX=startX:endX
+    for idxY=startY:endY
         val = a(idxX, idxY);
         tot = [tot, val];        
     end
     testCnt= testCnt+1;   
     end
     disp(strcat('cnt is : ',num2str(testCnt)));
-    fileID = fopen(strcat('c:\mat\output\origin\',num2str(xx),'-',num2str(yy),'test.pos'),'wt');	% 
+    fileID = fopen(strcat('c:\mat\output\6\',num2str(xx),'-',num2str(yy),'.db'),'wt');	% 
     fprintf(fileID,'%f\n',tot);
     fclose(fileID);
 end
 end
-
-a=d2DGociCdom;
-index=find(a==-999);
-a(index)=NaN;
-pcolor(a); shading interp;
-aa=rot90(a, -1);
-pcolor(aa); shading interp;
-aa=rot90(a, 1);
-pcolor(aa); shading interp;
-
-for y=1:6:1417
-for x=1:6:1393
-    val = d2DGociCdom(x,y);
-    
-    tot = [tot, val];
-end
-end
-
-tot = [];
-for x=1:6:5676
-for y=1:6:5556
-    val = d2DGociCdom(x,y);
-    tot = [tot, val];
-end
-end
-
-clear d2DGociFlag d2DGociTss d2DGociCdom d2DGociChl d2DLon d2DLat iStartX iStartY iLenX iLenY x y;
-
-% 아스키로 저장
-% 우선 1차원 배열로 reshape
-d1DGociSubFlag     = reshape(d2DGociSubFlag,     1, []);
-d1DGociSubTss      = reshape(d2DGociSubTss,      1, []);
-d1DGociSubCdom     = reshape(d2DGociSubCdom,     1, []);
-d1DGociSubChl      = reshape(d2DGociSubChl,      1, []);
-d1DGociMaskSub = reshape(d2DGociMaskSub, 1, []);
-d1DLonSub  = reshape(d2DLonSub,  1, []);
-d1DLatSub  = reshape(d2DLatSub,  1, []);
-d1DX       = reshape(d2DX     ,  1, []);
-d1DY       = reshape(d2DY     ,  1, []);
-clear d2DGociSubFlag d2DGociSubTss d2DGociSubCdom d2DGociSubChl d2DGociMaskSub d2DLonSub d2DLatSub d2DX d2DY;
-
-% -999 fill value 제거
-len = length( d1DGociMaskSub );
-cnt = 1;
-
-for i=1:len
-    if d1DGociMaskSub(i) ~= -999
-
-        d1DGociSubFlagWithoutFill(cnt) = d1DGociSubFlag(i);
-        d1DGociSubTssWithoutFill(cnt)  = d1DGociSubTss(i);
-        d1DGociSubCdomWithoutFill(cnt) = d1DGociSubCdom(i);
-        d1DGociSubChlWithoutFill(cnt)  = d1DGociSubChl(i);
-        d1DLonSubWithoutFill(cnt)  = d1DLonSub(i);
-        d1DLatSubWithoutFill(cnt)  = d1DLatSub(i);
-        d1DXWithoutFill(cnt)       = d1DX(i);
-        d1DYWithoutFill(cnt)       = d1DY(i);
-        cnt = cnt + 1;
-    end
-end
-
-if cnt == 1
-    d1DGociSubFlagWithoutFill(cnt) = NaN;
-    d1DGociSubTssWithoutFill(cnt)  = NaN;
-    d1DGociSubCdomWithoutFill(cnt) = NaN;
-    d1DGociSubChlWithoutFill(cnt)  = NaN;
-    d1DLonSubWithoutFill(cnt)  = NaN;
-    d1DLatSubWithoutFill(cnt)  = NaN;
-    d1DXWithoutFill(cnt)       = NaN;
-    d1DYWithoutFill(cnt)       = NaN;
-end
-
-disp( strcat('cnt: ', num2str(cnt) ) );
-clear d1DGociSubFlag d1DGociSubTss d1DGociSubCdom d1DGociSubChl d1DGociMaskSub d1DLonSub d1DLatSub d1DX d1DY cnt;
-
-
-d3Ddata = [d1DXWithoutFill; d1DYWithoutFill; d1DLonSubWithoutFill; d1DLatSubWithoutFill; ...
-           d1DGociSubTssWithoutFill; d1DGociSubCdomWithoutFill; d1DGociSubChlWithoutFill; d1DGociSubFlagWithoutFill];
-clear d1DXWithoutFill d1DYWithoutFill d1DLonSubWithoutFill d1DLatSubWithoutFill ...
-      d1DGociSubFlagWithoutFill d1DGociSubTssWithoutFill d1DGociSubCdomWithoutFill d1DGociSubChlWithoutFill;
-
-% '/HDFEOS/GRIDS/Image Data/Data Fields/--- Image Pixel Values'에서
-% Image Pixel Value만 분리해 내기 위해
-i1DidxStart = findstr(strBandNameFlag, '/');
-leni1DidxStart = length(i1DidxStart);
-idxStart = i1DidxStart(leni1DidxStart);
-idxEnd = length(strBandNameFlag);
-strBandNameShort=strBandNameFlag(idxStart+1:idxEnd);
-
-% COMS_GOCI_L2A_GA_20150507041642.FLAG.he5 만 분리해 내기 위해
-i1DidxStart = findstr(strHe5InputFlag, '\');
-leni1DidxStart = length(i1DidxStart);
-idxStart = i1DidxStart(leni1DidxStart);
-idxEnd = length(strHe5InputFlag);
-strHe5InputShort=strcat(strHe5InputFlag(idxStart+1:idxEnd-4),'.FLAG.he5');
-clear i1DidxStart leni1DidxStart idxStart idxEnd d1DX d1DY;
-
-fileID = fopen('tester.txt','wt');	% 
-
-
-fprintf(fileID,'%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\n',d3Ddata);
-fclose(fileID);
-
-clear fileID len d3Ddata strHe5InputShort strBandNameShort;
-
-disp( strcat('[matlab]', strHe5InputFlag, ' is sucessfully converted...') );
-
-res = 1;
-
-tot = [];
-for idxY=1:10:5000
-for idxX=1:10:5000
-    val = a(idxX, idxY);
-    tot = [tot, val];
-end
-end
-totalReshape = reshape(tot, 500, 500);
-pcolor(totalReshape);
-
-addX = 1000;
-addY = 1000;
-for yy=0:4
-for xx=0:4
-    
-    
-    startX = xx*addX +301;
-    startY = yy*addY +301;
-    endX = startX + addX -1;
-    endY = startY + addY -1;
-    tot = [];
-    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
-    testCnt=0;
-    for idxY=startY:10:endY
-    for idxX=startX:10:endX
-        val = a(idxX,idxY);
-        tot = [tot, val];
-        
-    end
-    testCnt= testCnt+1;
-   
-    
-    end
-    if xx==2 && yy==2
-        test22 = tot;
-        test22FirstReshpae = reshape(tot, 100, 100);
-        
-        b = fliplr( test22FirstReshpae );
-        b = rot90 ( b, -1 );
-        
-        pcolor(b); shading interp;
-    end
-    disp(strcat('cnt is : ',num2str(testCnt)));
-    fileID = fopen(strcat('c:\mat\output\',num2str(xx),num2str(yy),'test.pos'),'wt');	% 
-    fprintf(fileID,'%f\n',tot);
-    fclose(fileID);
-  
-
-end
-end
-
-
-          
