@@ -60,9 +60,8 @@ a(index)=NaN;
 %%Original%%
 
 tot = [];
-totArray = a(2301:3300, 2301:3300);
+totArray = a(301:400, 301:400);
 pcolor(totArray); shading interp;
-
 %%1/10 Code%%
 
 addX = 1000;
@@ -214,6 +213,59 @@ for xx=0:4
 end
 end
 
+%%6x6 Code%%
+
+addX = 800;
+addY = 800;
+for yy=0:5
+for xx=0:5
+    
+    
+    startX = xx*addX +301;
+    startY = yy*addY +301;
+    endX = startX + addX -1;
+    endY = startY + addY -1;
+    tot = [];
+    disp(strcat(num2str(startX), '->',num2str(endX),' @@ ',num2str(startY),'->',num2str(endY)));
+    testCnt=0;
+    
+    for idxX=startX:8:endY
+    for idxY=startY:8:endX
+        medTot = [];
+        startMedX = idxX;
+        endMedX = idxX + 7;
+        startMedY = idxY;
+        endMedY = idxY + 7;
+        for medX = startMedX:endMedX
+        for medY = startMedY:1:endMedY
+            medTot = [medTot, a(medX, medY)];
+        end
+        end
+        val = nanmean(medTot);
+        index  = find(isnan(medTot));
+        if length(index) > 70
+            val = NaN;
+        end
+        tot = [tot, val];
+        
+    end
+    testCnt= testCnt+1;
+  
+   
+    end
+    if xx==2 && yy==2
+        test22 = tot;
+        test22FirstReshpae = reshape(tot, 100, 100);        
+        pcolor(test22FirstReshpae);
+    end
+    disp(strcat('cnt is : ',num2str(testCnt)));
+    fileID = fopen(strcat('c:\mat\output\6\',num2str(xx),num2str(yy),'.pos'),'wt');	% 
+    fprintf(fileID,'%f\n',tot);
+    fclose(fileID);
+  
+
+end
+end
 
 
 %%Original Code%%
@@ -234,13 +286,13 @@ for xx=0:49
     
     for idxY=startY:endY
     for idxX=startX:endX
-        val = d2DGociChl(idxX, idxY);
+        val = a(idxX, idxY);
         tot = [tot, val];        
     end
     testCnt= testCnt+1;   
     end
     disp(strcat('cnt is : ',num2str(testCnt)));
-    fileID = fopen(strcat('c:\mat\output\origin\',num2str(xx),'_',num2str(yy),'test.pos'),'wt');	% 
+    fileID = fopen(strcat('c:\mat\output\origin\',num2str(xx),'-',num2str(yy),'test.pos'),'wt');	% 
     fprintf(fileID,'%f\n',tot);
     fclose(fileID);
 end
