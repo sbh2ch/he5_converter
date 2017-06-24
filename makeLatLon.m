@@ -1,7 +1,13 @@
-function exitcode = makeLatLon(yy,mm,dd,hh,type,inputName, strStartX, strEndX, strStartY, strEndY)
+function exitcode = makeLatLon(yy,mm,dd,hh,type,inputName, strStartX, strEndX, strStartY, strEndY, driverPath)
 %%%%%%%%%%%%%%%   CONFIG    %%%%%%%%%%%%%%%%%%%%%%%%%%
-outputName = [inputName,'_',yy,mm,dd,hh,type,'.he5'];
-data_fname=['T:\COMS\GOCI\1.0\',yy,'\',mm,'\',dd,'\L2\']; %%%%%%%%%%%%%%%%원본 he5 파일위치 사용자 PC환경에 맞게 잡아야함.
+currentTime = clock;
+year = num2str(currentTime(1));
+month = num2str(currentTime(2));
+day = num2str(currentTime(3));
+path = strcat('c:\output\goci\',year,'\',month,'\',day);
+mkdir(path);
+outputName = [path,'\',inputName,'_',yy,mm,dd,hh,'.',type,'.he5'];
+data_fname=[driverPath,'COMS\GOCI\1.0\',yy,'\',mm,'\',dd,'\L2\']; %%%%%%%%%%%%%%%%원본 he5 파일위치 사용자 PC환경에 맞게 잡아야함.
 %%%%%%%%%%%%%%%%%%%%%%%%            DON'T TOUCH            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 strBandName     = ['/HDFEOS/GRIDS/Image Data/Data Fields/', type ,' Image Pixel Values'];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -10,6 +16,7 @@ strBandName     = ['/HDFEOS/GRIDS/Image Data/Data Fields/', type ,' Image Pixel 
  strHe5InputFlag = strcat(data_fname,'COMS_GOCI_L2A_GA_', yy, mm, dd, hh, '*.',type,'.he5');
  ddir=dir(strHe5InputFlag);
 
+ 
 %기본 설정
 
 filename=getfield(ddir(1), 'name');
